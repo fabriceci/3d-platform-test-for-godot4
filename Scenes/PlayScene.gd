@@ -14,6 +14,13 @@ var before_player_pos: Vector3 = Vector3()
 func _ready():
 	for i in range(SPEED_ARRAY_SIZE):
 		_speed_array.append(0)
+	
+	$Texts/GDScriptButton.pressed = !Global.USE_NATIVE_METHOD
+	$Texts/SnapButton.pressed = Global.APPLY_SNAP
+	$Texts/ConstantSpeedButton.pressed = Global.FLOOR_CONSTANT_SPEED
+	$Texts/OnFloorButton.pressed = Global.FLOOR_BLOCK_ON_WALL
+	$Texts/AirFrictionButton.pressed = Global.APPLY_AIR_FRICTION
+	$Texts/AccelerationButton.pressed = Global.APPLY_ACCELERATION
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
