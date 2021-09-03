@@ -15,6 +15,9 @@ func _ready():
 	for i in range(SPEED_ARRAY_SIZE):
 		_speed_array.append(0)
 
+func _process(_delta):
+	if Input.is_action_just_pressed("reset"):
+		get_tree().reload_current_scene()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
