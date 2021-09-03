@@ -48,14 +48,14 @@ func _physics_process(delta):
 	
 	var accel = Global.GROUND_ACCELERATION if util_on_floor() else Global.AIR_ACCELERATION
 	var speed = Global.RUN_SPEED if Input.is_action_pressed("run") else Global.WALK_SPEED
-	if (util_on_floor() and not Global.APPLY_ACCELERATION) or (not util_on_floor() and not Global.APPLY_ACCELERATION):
-		if(util_on_floor() or Global.APPLY_AIR_FRICTION):
-			linear_velocity.x = direction.x * speed
-			linear_velocity.z = direction.z * speed
-	else:
-		if(util_on_floor() or Global.APPLY_AIR_FRICTION):
+	if Global.APPLY_ACCELERATION:
+		if util_on_floor() or Global.APPLY_AIR_FRICTION:
 			linear_velocity.x = lerp(linear_velocity.x, direction.x * speed, accel * delta)
 			linear_velocity.z = lerp(linear_velocity.z, direction.z * speed, accel * delta)
+	else:
+		if util_on_floor() or Global.APPLY_AIR_FRICTION:
+			linear_velocity.x = direction.x * speed
+			linear_velocity.z = direction.z * speed
 	
 	if Global.APPLY_SNAP:
 		floor_snap_length = Global.FLOOR_SNAP_LENGTH
@@ -155,7 +155,6 @@ var debug_top_down_angle:= 0.0
 var debug_last_normal = Vector2.ZERO
 var debug_last_motion = Vector2.ZERO
 var debug_auto_move := false
-var use_build_in := false
 
 var on_floor := false
 var platform_rid :=  RID()
@@ -404,17 +403,17 @@ func floor_snap():
 			position = position + travelled
 
 func util_on_floor():
-	if use_build_in: return is_on_floor()
+	if Global.USE_NATIVE_METHOD: return is_on_floor()
 	return on_floor
 
 func util_on_wall():
-	if use_build_in: return is_on_wall()
+	if Global.USE_NATIVE_METHOD: return is_on_wall()
 	return on_wall
 
 func util_on_floor_only():
-	if use_build_in: return is_on_floor_only()
+	if Global.USE_NATIVE_METHOD: return is_on_floor_only()
 	return on_floor and not on_wall and not on_ceiling
 
 func util_on_wall_only():
-	if use_build_in: return is_on_wall_only()
+	if Global.USE_NATIVE_METHOD: return is_on_wall_only()
 	return on_wall and not on_floor and not on_ceiling
